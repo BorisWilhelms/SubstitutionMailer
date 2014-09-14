@@ -2,7 +2,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
 	_ "github.com/BorisWilhelms/GoUtils/Unmarshal"
 	"github.com/BorisWilhelms/SubstitutionMailer/Substitution"
@@ -14,7 +13,7 @@ func main() {
 	if err != nil {
 		fmt.Println("Source could not be read... :%s", err.Error())
 	}
-	s, err := Substitution.Parse(string(source), "6b")
+	s, err := SubstitutionPlan.Parse(string(source), "6b")
 	if err != nil {
 		fmt.Println("Source could not be parsed... :%s", err.Error())
 	}
