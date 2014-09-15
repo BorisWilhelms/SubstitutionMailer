@@ -6,18 +6,6 @@ import (
 	"regexp"
 )
 
-type Substitution struct {
-	Grade        string
-	Hour         string
-	Class        string
-	SubstTeacher string
-	Teacher      string
-	Room         string
-	UnkownField  string
-	Description  string
-	Type         string
-}
-
 var substRegex, _ = regexp.Compile(">([[:alpha:]\\d,äÄöÖüÜß?\\-\\.\\/\\+ |&nbsp;]+)<")
 
 func extractSubstitutions(source string) []Substitution {

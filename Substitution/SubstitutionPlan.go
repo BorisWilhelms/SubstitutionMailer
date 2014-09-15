@@ -3,21 +3,10 @@ package SubstitutionPlan
 import (
 	"errors"
 	"strings"
-	"time"
 )
-
-type SubstitutionPlan struct {
-	Date         time.Time
-	LastChange   time.Time
-	Substitution []Substitution
-}
 
 func Parse(source string, grade string) (SubstitutionPlan, error) {
 	res := SubstitutionPlan{}
-
-	if strings.Index(source, grade) == -1 {
-		return res, nil
-	}
 
 	date, err := extractDate(source)
 	if err != nil {
