@@ -2,20 +2,21 @@ package SubstitutionPlan
 
 import (
 	"errors"
-	"regexp"
 	"strings"
 	"time"
 )
 
 type SubstitutionPlan struct {
-	Date time.Time
+	Date         time.Time
+	LastChange   time.Time
+	Substitution []Substitution
 }
 
-func Parse(source string, class string) (SubstitutionPlan, error) {
-	s := SubstitutionPlan{}
+func Parse(source string, grade string) (SubstitutionPlan, error) {
+	res := SubstitutionPlan{}
 
-	if strings.Index(source, class) == -1 {
-		return s, nil
+	if strings.Index(source, grade) == -1 {
+		return res, nil
 	}
 
 	date, err := extractDate(source)
@@ -23,19 +24,20 @@ func Parse(source string, class string) (SubstitutionPlan, error) {
 		return SubstitutionPlan{}, errors.New("Could not extract date from source")
 	}
 
-	s.Date = date
-
-	return s, nil
-}
-
-func extractDate(source string) (time.Time, error) {
-	r, _ := regexp.Compile("<div class=\"mon_title\">(\\d{2}.\\d?\\d.\\d{4}) \\w+</div>")
-	m := r.FindAllStringSubmatch(source, -1)
-	date, err := time.Parse("02.1.2006", m[0][1])
-
+	change, err := extractLastChange(source)
 	if err != nil {
-		return time.Time{}, err
+		return SubstitutionPlan{}, errors.New("Could not extract last change from source")
 	}
 
-	return date, nil
+	res.Date = date
+	res.LastChange = change
+	subst := extractSubstitutions(source)
+
+	for _, v := range subst {
+		if strings.Index(v.Grade, grade) != -1 {
+			res.Substitution = append(res.Substitution, v)
+		}
+	}
+
+	return res, nil
 }

@@ -13,9 +13,10 @@ func main() {
 	if err != nil {
 		fmt.Println("Source could not be read... :%s", err.Error())
 	}
-	s, err := SubstitutionPlan.Parse(string(source), "6b")
+	sub, err := SubstitutionPlan.Parse(string(source), "6b")
 	if err != nil {
 		fmt.Println("Source could not be parsed... :%s", err.Error())
 	}
-	fmt.Printf("%#v\n", s)
+
+	fmt.Println(sub)
 }
